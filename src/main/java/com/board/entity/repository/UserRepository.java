@@ -1,5 +1,6 @@
-package com.board.entity.board;
+package com.board.entity.repository;
 
+import com.board.entity.board.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     public int updateUserLastLogin(@Param("email") String email, @Param("lastLoginTime") LocalDateTime lastLoginTime);
 
     public User findByEmail(String email);
+
+    public User findById(Long id);
 }
