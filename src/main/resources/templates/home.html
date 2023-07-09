@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -7,7 +8,17 @@
 <body>
     <h1>Hello</h1>
     <h2>회원 게시판</h2>
-    <button type="button" class="btn btn-primary" onClick="location.href='/login'">로그인</button>
+    <div sec:authorize ="isAuthenticated()">
+        <div>
+            <span sec:authentication="name"></span>
+            님 환영합니다!
+        </div>
+        <button type="button" class="btn btn-primary" onClick="location.href='/board'">게시판 작성하러가기</button>
+        <button type="button" class="btn btn-primary" onClick="location.href='/logout'">로그아웃</button>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <button type="button" class="btn btn-primary" onClick="location.href='/login'">로그인</button>
+    </div>
 
 </body>
 </html>

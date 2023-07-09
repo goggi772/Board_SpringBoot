@@ -86,6 +86,7 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .loginProcessingUrl("/login/action")
                 .defaultSuccessUrl("/")
 //                .loginPage("/main/login_page")
 //                .successHandler(loginSuccessHandler) // 성공시 요청을 처리할 핸들러
