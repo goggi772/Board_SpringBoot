@@ -80,7 +80,7 @@ public class SecurityConfig {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/", "/login/**", "/main/**", "/js/**", "/css/**", "/image/**").permitAll()
+                .antMatchers( "/","/board/**", "/login/**", "/main/**", "/js/**", "/css/**", "/image/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
