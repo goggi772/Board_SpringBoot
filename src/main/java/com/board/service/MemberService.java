@@ -22,9 +22,6 @@ public class MemberService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
-
 
 //    @Transactional
 //    public TokenInfo login(String memberId, String password) {
