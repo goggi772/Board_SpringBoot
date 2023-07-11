@@ -1,5 +1,6 @@
 package com.board.entity.board;
 
+import com.board.DTO.BoardUpdateDTO;
 import com.board.entity.BaseTimeEntity;
 import lombok.*;
 
@@ -7,9 +8,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Builder
 public class Board extends BaseTimeEntity {
 

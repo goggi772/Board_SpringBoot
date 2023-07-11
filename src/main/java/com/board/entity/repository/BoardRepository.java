@@ -1,8 +1,9 @@
 package com.board.entity.repository;
 
-import com.board.DTO.BoardReadDTO;
-import com.board.DTO.BoardWriteDTO;
+import com.board.DTO.BoardUpdateDTO;
 import com.board.entity.board.Board;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,24 +16,13 @@ import java.util.Optional;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-//    Optional<BoardReadDTO> findByTitle(String title);
-
-
-    /*@Transactional
-    @Modifying
-    @Query(value = "UPDATE board SET TITLE = :boardWriteDTO.title, " +
-            "CONTENT = :boardWriteDTO.content, " +
-            "MODIFIED_TIME = NOW() " +
-            "WHERE ID = :boardWriteDTO.id")
-    public int updateBoard(@Param("boardWriteDTO") BoardWriteDTO boardWriteDTO);*/
-//    public int updateBoard(@Param("id") Long id, @Param("title") String title, @Param("content") String content);
-
-    /*String UPDATE_BOARD_ID = "UPDATE board " +
-            "SET id = id - 1 " +
-            "WHERE id > :id";
-
+    //게시글을 수정할 때 실제 db에 적용되는 쿼리를 사용한 update로직
     @Transactional
-    @Modifying
-    @Query(value = UPDATE_BOARD_ID, nativeQuery = true)
-    public void updateBoardId(@Param("id") Long id);*/
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE Board SET title = :#{#boardUpdateDTO.title}, " +
+            "content = :#{#boardUpdateDTO.content}, " +
+            "modified_time = NOW() " +
+            "WHERE Board.id = :#{#boardUpdateDTO.id}", nativeQuery = true)
+    void updateBoard(@Param(value = "boardUpdateDTO")BoardUpdateDTO boardUpdateDTO);
+
 }

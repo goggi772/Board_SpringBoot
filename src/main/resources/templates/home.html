@@ -3,22 +3,27 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--부트스트랩 css 추가-->
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
     <title>Home</title>
 </head>
 <body>
-    <h1>Hello</h1>
-    <h2>회원 게시판</h2>
-    <div sec:authorize ="isAuthenticated()">
+<h1>Hello</h1>
+<h2>회원 게시판</h2>
+<div sec:authorize ="isAuthenticated()">
         <div>
             <span sec:authentication="name"></span>
             님 환영합니다!
         </div>
-        <button type="button" class="btn btn-primary" onClick="location.href='/board/'">게시판 작성하러가기</button>
-        <button type="button" class="btn btn-primary" onClick="location.href='/logout'">로그아웃</button>
+        <button type="button" class="btn btn-primary" onclick="javascript:location.href='/board/list'">게시판 작성하러가기</button>
+        <button type="button" class="btn btn-primary" onclick="javascript:location.href='/logout'">로그아웃</button>
     </div>
     <div sec:authorize="isAnonymous()">
-        <button type="button" class="btn btn-primary" onClick="location.href='/login'">로그인</button>
+        <button type="button" class="btn btn-primary" onclick="javascript:location.href='/login'">로그인</button>
     </div>
-
+    <!--부트스트랩 js, jquery 추가-->
+<script src="/js/lib/jquery.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
 </body>
 </html>
