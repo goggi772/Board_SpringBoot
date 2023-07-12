@@ -3,8 +3,6 @@ package com.board.config;
 
 import com.board.service.MemberDetailsService;
 import com.board.userhandler.CustomAuthFailureHandler;
-import com.board.userhandler.LoginFailureHandler;
-import com.board.userhandler.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +13,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
@@ -27,8 +23,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true) //특정 페이지에 특정권한이 있는 유저만 접근을 허용할 경우 권한 및 인증을 미리 체크하겠다는 설정을 활성화
 public class SecurityConfig {
 
-    private final LoginSuccessHandler loginSuccessHandler;
-    private final LoginFailureHandler loginFailureHandler;
     private final CustomAuthFailureHandler customAuthFailureHandler;
     private final MemberDetailsService memberDetailsService;
 
@@ -44,57 +38,25 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    /*@Bean
-    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable() // csrf 토큰 비활성화 (테스트시 걸어주는 게 좋다.)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()            // auth의 요청이 들어오면
-                .antMatchers("/", "/main/**", "/js/**", "/css/**", "/image/**").permitAll()   // auth쪽으로 들어 오는건 요청없이 누구나 들어올수 있다.
-                .anyRequest()      // 위의 것이 아닌 다른 모든 요청은
-                .authenticated()
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증이 되어야한다.
-                .and()
-                .formLogin()
-                .loginPage("/main/login_page")
-                .loginProcessingUrl("/main/login/action") //submit을 받을 url주소
-//                .successHandler(loginSuccessHandler) // 성공시 요청을 처리할 핸들러
-                .failureHandler(loginFailureHandler) // 실패시 요청을 처리할 핸들러
-                .defaultSuccessUrl("/")
-                .and()
-                .logout()
-                .logoutSuccessUrl("/")
-
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }*/
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/board/write").authenticated()   //게시글 작성은 로그인 필요
                 .antMatchers( "/","/board/**", "/login/**", "/main/**", "/js/**", "/css/**", "/image/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/login/action")
-                .defaultSuccessUrl("/")
-//                .loginPage("/main/login_page")
-//                .successHandler(loginSuccessHandler) // 성공시 요청을 처리할 핸들러
-                .failureHandler(customAuthFailureHandler) // 실패시 요청을 처리할 핸들러
+                .loginProcessingUrl("/login/action")   //로그인 실패 시 error, exception 파라미터 전송
+                .defaultSuccessUrl("/board/list")
+                .failureHandler(customAuthFailureHandler)// 실패시 요청을 처리할 핸들러
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 로그아웃 URL
-                .logoutSuccessUrl("/"); // 성공시 리턴 URL
+                .logoutSuccessUrl("/board/list"); // 성공시 리턴 URL
 
         return http.build();
 

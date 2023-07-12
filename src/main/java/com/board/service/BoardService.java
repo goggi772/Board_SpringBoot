@@ -1,21 +1,19 @@
 package com.board.service;
 
-import com.board.DTO.BoardReadDTO;
-import com.board.DTO.BoardUpdateDTO;
-import com.board.DTO.BoardWriteDTO;
+import com.board.entity.DTO.BoardReadDTO;
+import com.board.entity.DTO.BoardUpdateDTO;
+import com.board.entity.DTO.BoardWriteDTO;
 import com.board.entity.board.Board;
 import com.board.entity.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -41,12 +39,13 @@ public class BoardService {
 
         HashMap<String, Object> resultMap = new HashMap<>();
 
-        Page<Board> list = boardRepository.findAll(PageRequest.of(page, size));
+        Page<Board> list = boardRepository.findAll(PageRequest.of(page, size, Sort.by("registerTime").descending()));
 
         resultMap.put("list", list.stream().map(BoardReadDTO::new).collect(Collectors.toList()));
         resultMap.put("paging", list.getPageable());
         resultMap.put("totalCnt", list.getTotalElements());
         resultMap.put("totalPage", list.getTotalPages());
+        resultMap.put("number", list.getNumber());
 
         return resultMap;
     }

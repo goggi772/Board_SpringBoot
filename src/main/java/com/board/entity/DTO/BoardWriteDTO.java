@@ -1,4 +1,4 @@
-package com.board.DTO;
+package com.board.entity.DTO;
 
 import com.board.entity.BaseTimeEntity;
 import com.board.entity.board.Board;

@@ -1,13 +1,11 @@
 package com.board.controller;
 
-import com.board.DTO.MemberRegisterDTO;
+import com.board.entity.DTO.MemberRegisterDTO;
 import com.board.entity.member.Member;
-import com.board.service.MemberDetails;
 import com.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +19,11 @@ public class MemberLoginController {
 
     @GetMapping("/")
     public String home() {
-        return "home";
+        return "redirect:/board/list";
     }
 
 
-    @GetMapping("/login/action")
+    @GetMapping("/login/action")  //로그인 실패 시 error와 exception 값을 받아 에러메시지 출력
     public String getLoginPage(Model model,
                                @RequestParam(value = "error", required = false) String error,
                                @RequestParam(value = "exception", required = false) String exception) {
@@ -45,7 +43,7 @@ public class MemberLoginController {
     }
 
     @ResponseBody
-    @PostMapping("/login/register/join")
+    @PostMapping("/login/register/join")  //회원가입
     public Member join(@ModelAttribute MemberRegisterDTO dto) {
         return memberService.register(dto);
     }

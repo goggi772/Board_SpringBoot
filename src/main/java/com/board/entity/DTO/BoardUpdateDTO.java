@@ -1,4 +1,4 @@
-package com.board.DTO;
+package com.board.entity.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

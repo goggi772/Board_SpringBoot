@@ -1,8 +1,7 @@
 package com.board.controller;
 
-import com.board.DTO.BoardReadDTO;
-import com.board.DTO.BoardUpdateDTO;
-import com.board.DTO.BoardWriteDTO;
+import com.board.entity.DTO.BoardUpdateDTO;
+import com.board.entity.DTO.BoardWriteDTO;
 import com.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+    //회원 아이디로 Member 객체 반환
     Optional<Member> findByUsername(String username);
 
 //    static final String UPDATE_USER_LAST_LOGIN = "UPDATE member SET LAST_LOGIN_TIME = :lastLoginTime WHERE EMAIL = :email";
