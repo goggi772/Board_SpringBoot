@@ -1,6 +1,7 @@
 package com.board.controller;
 
 import com.board.entity.DTO.MemberRegisterDTO;
+import com.board.entity.DTO.MemberUpdateDTO;
 import com.board.entity.member.Member;
 import com.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -42,10 +43,25 @@ public class MemberLoginController {
         return "register";
     }
 
-    @ResponseBody
     @PostMapping("/login/register/join")  //회원가입
-    public Member join(@ModelAttribute MemberRegisterDTO dto) {
-        return memberService.register(dto);
+    public String join(@ModelAttribute MemberRegisterDTO dto) {
+        memberService.register(dto);
+        return "redirect:/login";
+    }
+
+    @GetMapping("/login/userPage")
+    public String userPage() {
+        return "userDataUpdatePage";
+    }
+
+    @PostMapping("/login/userPage/update")
+    public void userDataUpdate(Model model,
+                               @RequestParam(value = "error", required = false) String error,
+                               @RequestParam(value = "exception", required = false) String exception,
+                               @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
+        memberService.updateMemberData(memberUpdateDTO);
     }
 
     /*@GetMapping("/login/members")

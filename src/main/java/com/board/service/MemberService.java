@@ -1,10 +1,13 @@
 package com.board.service;
 
 
+import com.board.entity.DTO.MemberUpdateDTO;
 import com.board.entity.DTO.MemberRegisterDTO;
 import com.board.entity.member.Member;
 import com.board.entity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import org.springframework.stereotype.Service;
@@ -22,11 +25,21 @@ public class MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public Member register(MemberRegisterDTO dto) {  //회원가입 로직(암호화)
+    public void register(MemberRegisterDTO dto) {  //회원가입 로직(암호화)
         dto.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
-
-        return memberRepository.save(dto.toEntity());
+        memberRepository.save(dto.toEntity());
     }
+
+    @Transactional
+    public void updateMemberData(MemberUpdateDTO requestDto) {
+        Member member = findByUsername(requestDto.getUsername()).orElseThrow(()->
+                new UsernameNotFoundException("NotFoundUserName"));
+        if (bCryptPasswordEncoder.matches(requestDto.getOldPassword(), member.getPassword())) {
+            member.updateMemberData(requestDto.getNewPassword(), requestDto.getEmail());
+            memberRepository.save(member);
+        } else throw new BadCredentialsException("비밀번호가 맞지 않습니다.");
+    }
+
 
     //회원 목록
     public List<Member> findAll() {

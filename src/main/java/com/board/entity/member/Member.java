@@ -33,5 +33,10 @@ public class Member {
     @Column(nullable = false)
     private Role role;   //회원 권한
 
+    public void updateMemberData(String password, String email) {
+        this.password = password;
+        this.email = email;
+    }
+
 
 }
