@@ -37,7 +37,11 @@
                 <div sec:authorize ="isAuthenticated()" class="right-box">
                         <span sec:authentication="name"></span>
                     님 환영합니다!
+                    <form th:action="@{/login/userPage}" method="post">
+                    <input type="hidden" name="name" th:value="${#authentication.getName()}">
                     <button type="button" class="btn btn-primary" onclick="javascript:location.href='/logout'">로그아웃</button>
+                    <button type="submit" class="btn btn-primary">내 정보</button>
+                    </form>
                 </div>
                 <div sec:authorize="isAnonymous()" class="right-box">
                     <button type="button" class="btn btn-primary" onclick="javascript:location.href='/login'">로그인</button>

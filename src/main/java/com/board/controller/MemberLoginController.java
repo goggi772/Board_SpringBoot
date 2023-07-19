@@ -49,19 +49,28 @@ public class MemberLoginController {
         return "redirect:/login";
     }
 
-    @GetMapping("/login/userPage")
-    public String userPage() {
-        return "userDataUpdatePage";
+    @PostMapping("/login/userPage")
+    public String userPage(Model model, @RequestParam String name) {
+        model.addAttribute("member", memberService.findByUsername(name));
+        return "userDataPage";
     }
 
+    @PostMapping("/login/userModifyPage")
+    public String userModifyPage(Model model, @RequestParam String name) {
+        model.addAttribute("member", memberService.findByUsername(name));
+        return "userModifyPage";
+    }
+
+
     @PostMapping("/login/userPage/update")
-    public void userDataUpdate(Model model,
-                               @RequestParam(value = "error", required = false) String error,
-                               @RequestParam(value = "exception", required = false) String exception,
-                               @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
-        model.addAttribute("error", error);
-        model.addAttribute("exception", exception);
+    public String userDataUpdate(Model model,
+//                                 @RequestParam(value = "error", required = false) int error,
+//                                 @RequestParam(value = "exception", required = false) String exception,
+                                 @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
+//        model.addAttribute("error", error);
+//        model.addAttribute("exception", exception);
         memberService.updateMemberData(memberUpdateDTO);
+        return "redirect:/login/userPage";
     }
 
     /*@GetMapping("/login/members")

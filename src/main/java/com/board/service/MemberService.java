@@ -3,8 +3,10 @@ package com.board.service;
 
 import com.board.entity.DTO.MemberUpdateDTO;
 import com.board.entity.DTO.MemberRegisterDTO;
+import com.board.entity.ErrorCode;
 import com.board.entity.member.Member;
 import com.board.entity.repository.MemberRepository;
+import com.board.userhandler.NotEqualPasswordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.board.entity.ErrorCode.NOT_EQUAL_PASSWORD;
 
 @RequiredArgsConstructor
 @Service
@@ -35,9 +39,9 @@ public class MemberService {
         Member member = findByUsername(requestDto.getUsername()).orElseThrow(()->
                 new UsernameNotFoundException("NotFoundUserName"));
         if (bCryptPasswordEncoder.matches(requestDto.getOldPassword(), member.getPassword())) {
-            member.updateMemberData(requestDto.getNewPassword(), requestDto.getEmail());
+            member.updateMemberData(bCryptPasswordEncoder.encode(requestDto.getNewPassword()), requestDto.getEmail());
             memberRepository.save(member);
-        } else throw new BadCredentialsException("비밀번호가 맞지 않습니다.");
+        } else throw new NotEqualPasswordException(NOT_EQUAL_PASSWORD);
     }
 
 
