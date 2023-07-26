@@ -1,5 +1,7 @@
 package com.board.entity.repository;
 
+import com.board.entity.DTO.MemberFindDTO;
+import com.board.entity.DTO.MemberUpdateDTO;
 import com.board.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,6 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     //회원 아이디로 Member 객체 반환
     Optional<Member> findByUsername(String username);
+    Optional<MemberFindDTO> findAllByUsername(String username);
 
 //    static final String UPDATE_USER_LAST_LOGIN = "UPDATE member SET LAST_LOGIN_TIME = :lastLoginTime WHERE EMAIL = :email";
 //

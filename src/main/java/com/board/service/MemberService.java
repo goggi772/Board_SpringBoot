@@ -1,6 +1,7 @@
 package com.board.service;
 
 
+import com.board.entity.DTO.MemberFindDTO;
 import com.board.entity.DTO.MemberUpdateDTO;
 import com.board.entity.DTO.MemberRegisterDTO;
 import com.board.entity.ErrorCode;
@@ -58,5 +59,9 @@ public class MemberService {
     //회원 아이디로 Member 찾기
     public Optional<Member> findByUsername(String username) {
         return memberRepository.findByUsername(username);
+    }
+
+    public Optional<MemberFindDTO> findAllByUsername(String username) {
+        return memberRepository.findAllByUsername(username);
     }
 }

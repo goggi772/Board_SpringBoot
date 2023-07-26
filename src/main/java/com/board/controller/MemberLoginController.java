@@ -1,15 +1,21 @@
 package com.board.controller;
 
+import com.board.entity.DTO.ErrorResponse;
 import com.board.entity.DTO.MemberRegisterDTO;
 import com.board.entity.DTO.MemberUpdateDTO;
 import com.board.entity.member.Member;
 import com.board.service.MemberService;
+import com.board.userhandler.NotEqualPasswordException;
 import lombok.RequiredArgsConstructor;
 
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
+import java.util.HashMap;
 
 @RequiredArgsConstructor
 @Controller
@@ -50,27 +56,37 @@ public class MemberLoginController {
     }
 
     @PostMapping("/login/userPage")
-    public String userPage(Model model, @RequestParam String name) {
-        model.addAttribute("member", memberService.findByUsername(name));
+    public String userPage(Model model, Principal principal) {
+        model.addAttribute("member", memberService.findAllByUsername(principal.getName()));
         return "userDataPage";
     }
 
     @PostMapping("/login/userModifyPage")
-    public String userModifyPage(Model model, @RequestParam String name) {
-        model.addAttribute("member", memberService.findByUsername(name));
+    public String userModifyPage(Model model, Principal principal) {
+        model.addAttribute("member", memberService.findAllByUsername(principal.getName()));
         return "userModifyPage";
     }
 
 
     @PostMapping("/login/userPage/update")
     public String userDataUpdate(Model model,
-//                                 @RequestParam(value = "error", required = false) int error,
-//                                 @RequestParam(value = "exception", required = false) String exception,
-                                 @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
+                                 @ModelAttribute MemberUpdateDTO memberUpdateDTO){
 //        model.addAttribute("error", error);
 //        model.addAttribute("exception", exception);
-        memberService.updateMemberData(memberUpdateDTO);
-        return "redirect:/login/userPage";
+        try {
+            memberService.updateMemberData(memberUpdateDTO);
+            model.addAttribute("member", memberService.findAllByUsername(memberUpdateDTO.getUsername()));
+            System.out.println("success");
+            return "userDataPage";
+        } catch (NotEqualPasswordException e){
+            model.addAttribute("member", memberService.findAllByUsername(memberUpdateDTO.getUsername()));
+            model.addAttribute("error", "비밀번호가 맞지 않습니다.");
+            System.out.println("fail");
+            return "userModifyPage";
+        }
+        /*memberService.updateMemberData(memberUpdateDTO);
+        System.out.println("success");
+        return "redirect:/login/userPage";*/
     }
 
     /*@GetMapping("/login/members")
