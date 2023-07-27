@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:type="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Board List</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <!--부트스트랩 css 추가-->
+  <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+</head>
+<style>
+  .box1 {
+    border: 0px;
+    border-radius: 8px;
+    background-color: #efefef;
+    margin: 8px;
+    padding: 8px;
+    height: 100px;
+  }
+
+  .box2 {
+    border: 0px;
+    border-radius: 8px;
+    background-color: #efefef;
+    margin: 8px;
+    padding: 8px;
+  }
+</style>
+<body>
+<div class="container">
+  <h1>Board View.</h1>
+  <div class="mb-3">
+    <label class="form-label" size="5">Title.</label>
+    <p class="box2" th:text="${info.title}"></p>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" size="5">Content</label>
+<!--    <p class="form-control" th:text="${info.content}"></p>-->
+    <div class="box1" th:text="${info.content}"></div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" size="5">Writer.</label>
+    <p class="box2" th:text="${info.writeUsername}"></p>
+  </div>
+  <button type="button" class="btn btn-success" onclick="javascript:location.href='/board/list'">Previous</button>
+<!--  작성자만 수정 및 삭제 가능-->
+  <th:block th:if="${info.writeUsername.equals(#authentication.getName())}">
+    <form action="/board/update" method="GET">
+      <input type="hidden" name="id" th:value="${info.id}">
+      <button type="submit" class="btn btn-success" >Modifying</button>
+    </form>
+    <form action="/board/delete" method="POST">
+      <input type="hidden" name="id" th:value="${info.id}">
+      <button type="submit" class="btn btn-success" onclick="alert('Delete Complete')">Delete</button>
+    </form>
+<!--    <button type="button" class="btn btn-success" onclick="javascript:location.href='/board/delete'">delete</button>-->
+  </th:block>
+</div>
+<!--부트스트랩 js, jquery 추가-->
+<script src="/js/lib/jquery.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
+</body>
+</html>

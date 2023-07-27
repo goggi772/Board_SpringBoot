@@ -1,19 +1,23 @@
-package com.board.DTO;
+package com.board.entity.DTO;
 
 
 import com.board.entity.board.Board;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class BoardReadDTO {
-    private final Long id;
-    private final String title;
-    private final String content;
-    private final String writeUsername;
-    private final int readCount;
-    private final LocalDateTime registerTime;
+@NoArgsConstructor
+@AllArgsConstructor
+public class BoardReadDTO {  //게시글 불러올 때 사용하는 DTO
+    private Long id;
+    private String title;
+    private String content;
+    private String writeUsername;
+    private int readCount;
+    private LocalDateTime registerTime;
 
     public BoardReadDTO(Board entity) {
         this.id = entity.getId();

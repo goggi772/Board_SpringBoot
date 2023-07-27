@@ -18,20 +18,25 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;   //회원 고유 number
 
     @Column(nullable = false, length = 30, unique = true)
-    private String username;
+    private String username;  //회원 id
 
     @Column(nullable = false, length = 100)
-    private String password;
+    private String password;   //비밀번호
 
     @Column(nullable = false, length = 50)
-    private String email;
+    private String email;  //이메일
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role;   //회원 권한
+
+    public void updateMemberData(String password, String email) {
+        this.password = password;
+        this.email = email;
+    }
 
 
 }

@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 @Slf4j
-public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {  //로그인 실패 시 exception관리하는 handler
     /**
      * HttpServletRequest : Request 정보
      * HttpServletResponse : Response에 대해 설정할 수 있는 변수
@@ -46,7 +46,7 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
 
         log.info("failureHandler : " + errorMessage);
 
-        errorMessage = URLEncoder.encode(errorMessage, StandardCharsets.UTF_8); /* 한글 인코딩 깨지는 문제 방지 */
+        errorMessage = URLEncoder.encode(errorMessage, StandardCharsets.UTF_8);  //한글 인코딩 깨지는 문제 방지
         setDefaultFailureUrl("/login/action?error=true&exception=" + errorMessage);
         super.onAuthenticationFailure(request, response, exception);
     }

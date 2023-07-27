@@ -1,14 +1,15 @@
-package com.board.DTO;
+package com.board.entity.DTO;
 
 import com.board.entity.member.Member;
 import com.board.entity.member.Role;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MemberRegisterDTO {
+public class MemberRegisterDTO {  //회원가입 DTO
 
     private Long id;
 
