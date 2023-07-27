@@ -27,10 +27,13 @@ public class BoardService {
     }
 
     public void update_content(BoardUpdateDTO dto) {   //게시글 수정 시 db update
-        boardRepository.updateBoard(dto);
+        Board board = boardRepository.findById(dto.getId()).orElseThrow(() ->
+                new IllegalArgumentException("게시물이 존재하지 않음"));
+        board.updateContent(dto.getTitle(), dto.getContent());
+        boardRepository.save(board);
     }
 
-    public void delete_Id(BoardWriteDTO dto) {  //게시글 삭제 시 db에서 삭제
+    public void delete_Id(BoardReadDTO dto) {  //게시글 삭제 시 db에서 삭제
         boardRepository.deleteById(dto.getId());
     }
 

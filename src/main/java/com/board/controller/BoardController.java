@@ -1,5 +1,6 @@
 package com.board.controller;
 
+import com.board.entity.DTO.BoardReadDTO;
 import com.board.entity.DTO.BoardUpdateDTO;
 import com.board.entity.DTO.BoardWriteDTO;
 import com.board.service.BoardService;
@@ -29,11 +30,11 @@ public class BoardController {
     }
 
     @GetMapping("/view") //특정 게시글 title, content, writeusername을 보여줌
-    public String getBoardViewPage(Model model, @ModelAttribute BoardWriteDTO boardWriteDTO) throws Exception {
+    public String getBoardViewPage(Model model, @ModelAttribute BoardReadDTO boardReadDTO) throws Exception {
 
         try {
-            if (boardWriteDTO.getId() != null) {
-                model.addAttribute("info", boardService.findById(boardWriteDTO.getId()));
+            if (boardReadDTO.getId() != null) {
+                model.addAttribute("info", boardService.findById(boardReadDTO.getId()));
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -44,10 +45,10 @@ public class BoardController {
 
 
     @GetMapping("/update")  //title, content 내용 수정 화면 보여줌
-    public String getBoardUpdatePage(Model model, @ModelAttribute BoardWriteDTO boardWriteDTO) throws Exception {
+    public String getBoardUpdatePage(Model model, @ModelAttribute BoardReadDTO boardReadDTO) throws Exception {
         try {
-            if (boardWriteDTO.getId() != null) {
-                model.addAttribute("info", boardService.findById(boardWriteDTO.getId()));
+            if (boardReadDTO.getId() != null) {
+                model.addAttribute("info", boardService.findById(boardReadDTO.getId()));
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -76,8 +77,8 @@ public class BoardController {
 
 
     @PostMapping("/delete")  //게시글 삭제 로직
-    public String delete(@ModelAttribute BoardWriteDTO boardWriteDTO) {
-        boardService.delete_Id(boardWriteDTO);
+    public String delete(@ModelAttribute BoardReadDTO boardReadDTO) {
+        boardService.delete_Id(boardReadDTO);
         return "redirect:/board/list";
     }
 }

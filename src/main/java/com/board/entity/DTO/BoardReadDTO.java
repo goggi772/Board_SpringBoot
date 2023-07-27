@@ -5,10 +5,12 @@ import com.board.entity.board.Board;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardReadDTO {  //게시글 불러올 때 사용하는 DTO
