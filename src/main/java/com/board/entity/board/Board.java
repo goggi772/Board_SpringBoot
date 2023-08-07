@@ -38,4 +38,8 @@ public class Board extends BaseTimeEntity {
         this.content = content;
     }
 
+    public void addReadCount(int readCount) {
+        this.readCount = readCount + 1;
+    }
+
 }

@@ -9,6 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -19,18 +24,40 @@ public class BoardController {
     @GetMapping("/list") //게시글 목록 page로 보여줌
     public String board_home(Model model,
                              @RequestParam(required = false, defaultValue = "0") Integer page,
-                             @RequestParam(required = false, defaultValue = "5") Integer size)
+                             @RequestParam(required = false, defaultValue = "5") Integer size,
+                             HttpServletResponse response,
+                             HttpServletRequest request)
             throws Exception {
         try {
             model.addAttribute("resultMap", boardService.findAll(page, size));
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+
+        Cookie cookie = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie value : cookies) {
+                if (value.getName().equals("ReadCount")) cookie = value;
+            }
+        }
+        if (cookie == null) {
+
+            Cookie newcookie = new Cookie("ReadCount", null);
+            newcookie.setComment("게시글 조회수 증가");
+            newcookie.setMaxAge(10);
+            response.addCookie(newcookie);
+        }
+
         return "board_home";
     }
 
     @GetMapping("/view") //특정 게시글 title, content, writeusername을 보여줌
-    public String getBoardViewPage(Model model, @ModelAttribute BoardReadDTO boardReadDTO) throws Exception {
+    public String getBoardViewPage(Model model,
+                                   @ModelAttribute BoardReadDTO boardReadDTO,
+                                   HttpServletResponse response,
+                                   HttpServletRequest request,
+                                   @CookieValue(name = "ReadCount") String cookie) throws Exception {
 
         try {
             if (boardReadDTO.getId() != null) {
@@ -39,6 +66,15 @@ public class BoardController {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+
+
+
+        if (!cookie.contains(String.valueOf(boardReadDTO.getId()))) {
+            cookie += boardReadDTO.getId() + "/";
+            boardService.plusReadCount(boardReadDTO);
+        }
+        response.addCookie(new Cookie("ReadCount", cookie));
+
 
         return "board_view";
     }
