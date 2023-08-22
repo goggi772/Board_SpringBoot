@@ -49,8 +49,9 @@
                 <tr>
                     <th width="10%">게시글번호</th>
                     <th width="">제목</th>
-                    <th width="20%">작성자</th>
+                    <th width="10%">작성자</th>
                     <th width="20%">작성일</th>
+                    <th width="10%">조회수</th>
                 </tr>
                 </thead>
                 <tbody id="tbody">
@@ -68,6 +69,9 @@
                     </td>
                     <td>
                         <span th:text="${list.registerTime}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${list.readCount}"></span>
                     </td>
                 </tr>
                 </tbody>

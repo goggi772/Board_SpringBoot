@@ -19,7 +19,7 @@ public class BoardReadDTO {  //게시글 불러올 때 사용하는 DTO
     private String content;
     private String writeUsername;
     private int readCount;
-    private LocalDateTime registerTime;
+    private String registerTime;
 
     public BoardReadDTO(Board entity) {
         this.id = entity.getId();

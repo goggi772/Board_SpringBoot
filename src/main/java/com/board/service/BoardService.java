@@ -58,5 +58,13 @@ public class BoardService {
                 new RuntimeException("id가 존재하지 않음"));
     }
 
+    @Transactional
+    public void plusReadCount(BoardReadDTO dto) {
+        Board board = boardRepository.findById(dto.getId()).orElseThrow(() ->
+                new IllegalArgumentException("게시물이 존재하지 않음"));
+        board.addReadCount(board.getReadCount());
+        boardRepository.save(board);
+    }
+
 
 }
